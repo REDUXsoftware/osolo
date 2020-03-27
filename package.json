@@ -1,0 +1,14 @@
+{
+  "name": "osolo",
+  "version": "1.0.0",
+  "description": "a remote-managment tool for srcds/minecraft servers.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "REDUX | Viktor Lazarev",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
