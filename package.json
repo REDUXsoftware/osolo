@@ -11,7 +11,7 @@
   "dependencies": {
     "crypto-random-string": "^3.2.0",
     "express": "^4.17.1",
-    "node-2fa": "^1.1.2",
-    "qrcode": "^1.4.4"
+    "qrcode": "^1.4.4",
+    "speakeasy": "^2.0.0"
   }
 }

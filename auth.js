@@ -1,4 +1,4 @@
-var settings = require('./settings');
+
 var twoF = require('node-2fa');
 var QRCode = require('qrcode');
 
@@ -36,34 +36,15 @@ function tf_generateToken(){
     console.log(newToken);
 }
 
-function tf_verifyToken(a){
-    if(gS = null){
-        var tokBuf = twoF.verifyToken(gSettings, a);
-    }
-    else {
-        var tokBuf = twoF.verifyToken(gS, a);
-    };
-
-    if (tokBuf == null){
-        return false;
-    }
-    else {
-        if(tokBuf.delta == 0){
-            return true;
-        }
-        else{
-            return false;
-        };
-    };
-};
 
 module.exports = {
     /**
     * Set's 2FA Varibles
     * @param {string} a Secret Key 
-    * @param {string} b QR Link
     */
-    setKeys: tf_setS(),
+    setKeys: function(a){
+        gS = a;
+    },
     /**
      * Generates Token Secret
      */
@@ -77,7 +58,31 @@ module.exports = {
     /**
      * Verify the token
      */
-    verifyToken: tf_verifyToken(),
+    verifyToken: function(a){
+        if(gS = null){
+            var tokBuf = twoF.verifyToken(gS, a);
+            console.log(tokBuf);
+        }
+        else {
+            var tokBuf = twoF.verifyToken(gS, a);
+            console.log(tokBuf);
+        };
+    
+        if (!tokBuf.delta){
+            console.log(tokBuf.delta);
+            return false;
+        }
+        else {
+            if(tokBuf.delta == 0){
+                console.log(tokBuf.delta);
+                return true;
+            }
+            else{
+                console.log(tokBuf.delta);
+                return false;
+            };
+        };
+    },
     /**
      * Generate Token
      */

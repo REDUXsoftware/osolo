@@ -35,7 +35,8 @@ function loadSettings(){
             settings[0] = setting5.otpin;
             settings[1] = setting5.gSec;
             settings[2] = setting5.tQR;
-            twofactor.setKeys(settings[1]);
+            var key = settings[1];
+            twofactor.setKeys(key);
             console.info("settings.json loaded.");
             console.log("OTPIN:" + settings[0]);
         });
