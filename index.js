@@ -2,8 +2,8 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var settingsA = [];
-var twoFA = require('./2fa');
-var settings = require('./settings');
+var twoFA = require('./scripts/auth');
+var settings = require('./scripts/settings');
 
 settings.load;
 settingsA = settings.getSettings;
@@ -20,7 +20,7 @@ app.use(function(req, res, next) {
   });
 app.get('/', function(req, res){
   twoFA.genToken;
-  res.sendFile(path.join(__dirname + '/login.html'));
+  res.sendFile(path.join(__dirname + '/html/login.html'));
 })
 
 app.get('/newQRcode', function(req,res){
