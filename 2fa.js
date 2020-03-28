@@ -5,6 +5,7 @@ var QRCode = require('qrcode');
 var gS;
 var uri = "";
 var QR = "";
+var a = "";
 
 
 function tf_genS(){
@@ -15,9 +16,8 @@ function tf_genS(){
     QR = newSecret.qr;
     
 };
-function tf_setS(a,b){
+function tf_setS(a){
     gS = a;
-    QR = b;
 }
 
 function tf_getS(){
@@ -33,6 +33,7 @@ function tf_QR(){
 };
 function tf_generateToken(){
     var newToken = twoF.generateToken(gS);
+    console.log(newToken);
 }
 
 function tf_verifyToken(a){
@@ -80,5 +81,5 @@ module.exports = {
     /**
      * Generate Token
      */
-    genToken: tf_generateToken()
+    genToken: tf_generateToken(),
 };

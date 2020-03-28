@@ -23,36 +23,36 @@
 			</div>
 
 			<!-- login -->
-			<form class="toggle-class" action="login-dark.html">
+			<form class="toggle-class" action="#">
 				<fieldset class="uk-fieldset">
 					
 					<div class="uk-margin-small">
 						<div class="uk-inline uk-width-1-1">
 							<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-							<input class="uk-input uk-border-pill" required placeholder="2FA Code" type="password">
+							<input id="tokenInput" class="uk-input uk-border-pill" required placeholder="2FA Code" type="password">
 						</div>
 					</div>
 					<div class="uk-margin-small">
 						<label><input class="uk-checkbox" type="checkbox"> Keep me logged in for 7 days.</label>
 					</div>
 					<div class="uk-margin-bottom">
-						<button type="submit" class="uk-button uk-button-primary uk-border-pill uk-width-1-1">LOG IN</button>
+						<button id="2faLogin" type="submit" class="uk-button uk-button-primary uk-border-pill uk-width-1-1">LOG IN</button>
 					</div>
 				</fieldset>
 			</form>
 			<!-- /login -->
 
 			<!-- recover password -->
-			<form class="toggle-class" hidden>
+			<form class="toggle-class" action="#" hidden>
 				<div class="uk-margin-small">
 					<div class="uk-inline uk-width-1-1">
-						<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: mail"></span>
+						<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
 						<input id="otpIn"class="uk-input uk-border-pill" placeholder="OTP" required type="text">
 					</div>
 				</div>
 				<div class="uk-margin-bottom">
 					<button id="qrBtn" type="submit" class="uk-button uk-button-primary uk-border-pill uk-width-1-1">GENERATE QR</button>
-					<iframe id="qrIframe"></iframe>
+					<iframe id="qrIframe" height="166" width="166"></iframe>
 				</div>
 			</form>
 			<!-- /recover password -->
@@ -79,13 +79,36 @@
 			   
 				var qrFrame = document.getElementById('qrIframe');
 				var collInput = document.getElementById('otpIn');
-				var newURL = homeURL+"id="+collInput;
+				var newURL = homeURL+"otp="+collInput;
 				var req = new XMLHttpRequest();
 				req.open("GET", newURL, true);
 				req.addEventListener('load', function(){
 					if(req.status>= 200 && req.status<400){
 						console.log(req.responseText);
 						qrFrame.src = req.responseText;
+					}
+					else {
+						console.log("Error in network request: " + request.statusText);
+					 }
+				});
+			 req.send(null);
+				
+		  
+		   
+			 });
+
+			 document.getElementById('2faLogin').addEventListener('click', function(event) {
+				console.log("pressed");
+				var homeURL = "http://localhost:8080/newQRcode?"
+			   
+				
+				var collInput = document.getElementById('tokenInput');
+				var newURL = homeURL+"tfa="+collInput;
+				var req = new XMLHttpRequest();
+				req.open("GET", newURL, true);
+				req.addEventListener('load', function(){
+					if(req.status>= 200 && req.status<400){
+						console.log(req.responseText);
 					}
 					else {
 						console.log("Error in network request: " + request.statusText);

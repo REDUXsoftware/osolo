@@ -1,10 +1,12 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-
+var settingsA = [];
+var twoFA = require('./2fa');
 var settings = require('./settings');
 
 settings.load;
+settingsA = settings.getSettings;
 
 //reading settings.json, make a new one if one isn't detected.
 
@@ -17,25 +19,35 @@ app.use(function(req, res, next) {
     next();
   });
 app.get('/', function(req, res){
+  twoFA.genToken;
   res.sendFile(path.join(__dirname + '/login.html'));
 })
 
 app.get('/newQRcode', function(req,res){
     console.info("RECEIVED GET REQUEST");
-    var qParams = [];
-    for (var p in req.query){
-        qParams.push({'name':p, 'value':req.query[p]})
-    }
-    if (qParams[1].value == settings.getOTP){
-      res.send(settings.getQR);
-      console.log(settings.getQR);
+    var b = req.query.otp;
+    if (b = settingsA[0]){
+      var buffer = settingsA[2];
+      res.send(buffer);
     }
     else{
       console.log("wrong");
       res.send(403);
     };
-   
-   
+});
+
+app.get('/verifyT', function(req,res){
+  console.info("RECEIVED GET REQUEST");
+  var b = req.query.tfa;
+  var c = twoFA.verifyToken(b);
+  if(c = true){
+    console.log("token is correct");
+    res.send(200);
+  }
+  else {
+    res.send(403);
+    console.log("token is wrong");
+  }
 });
 
 app.listen(app.get('port'), function(){

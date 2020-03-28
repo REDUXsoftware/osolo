@@ -35,7 +35,7 @@ function loadSettings(){
             settings[0] = setting5.otpin;
             settings[1] = setting5.gSec;
             settings[2] = setting5.tQR;
-            
+            twofactor.setKeys(settings[1]);
             console.info("settings.json loaded.");
             console.log("OTPIN:" + settings[0]);
         });
@@ -43,28 +43,17 @@ function loadSettings(){
     });
 };
 
-function getOTP(){
-  return settings[0];
+function getSettings(){
+  return settings;
 };
-function getgS(){
-    return settings[1];
-  };
-
-  function getQR(){
-    return settings[2];
-  };
-  
-
 module.exports = {
     /**
     * Initializes settings.json
     */
     load: loadSettings(),
     /**
-     * Retrieves settings
+     * Retrieves settings into a obj array
      */
-    getOTP: getOTP(), 
-    getgS: getgS() ,
-    getQR: getQR() 
+    getSettings: getSettings()
 };
 
