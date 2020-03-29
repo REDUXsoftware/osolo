@@ -2,8 +2,8 @@
  * Osolo's Settings Manager
  */
 const fs = require('fs');
-const sPath = './cfg/settings.json';
-var twofactor = require('./auth');
+const sPath = 'settings.json';
+var auth = require('./auth');
 const cryptoRandomString = require('crypto-random-string');
 
 var userIDs = [];
@@ -24,7 +24,9 @@ function loadSettings(){
                 ]  
             };
             let data = JSON.stringify(settings, null, 2);
-            fs.writeFile('settings.json', data);
+            auth.genSecret(bufID);
+            fs.writeFileSync(sPath, data);
+            
             console.info("settings.json has been generated.");
             console.info("OTP for 2FA can be found in settings.json");
         }
@@ -32,9 +34,9 @@ function loadSettings(){
         //if file is found, read it and load it into array
         fs.readFile(sPath, (err, data) => {
             if (err) throw err;
-            
+            settings = JSON.parse(data);
             console.info("settings.json loaded.");
-            console.log("OTPIN:" + settings[0]);
+            console.log("OTPIN:" + settings.otpin);
         });
    
     });
