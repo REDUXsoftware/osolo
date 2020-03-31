@@ -2,13 +2,12 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var settingsA = [];
-var twoFA = require('./scripts/auth');
+var auth = require('./scripts/auth');
 var settings = require('./scripts/settings');
+var sArr;
 
-settings.load;
-settingsA = settings.getSettings;
 
-//reading settings.json, make a new one if one isn't detected.
+
 
 
   
@@ -19,27 +18,33 @@ app.use(function(req, res, next) {
     next();
   });
 app.get('/', function(req, res){
-  twoFA.genToken;
+  auth.genToken;
   res.sendFile(path.join(__dirname + '/html/login.html'));
 })
 
 app.get('/newQRcode', function(req,res){
-    console.info("RECEIVED GET REQUEST");
+    console.info("RECEIVED GET REQUEST for QR Code");
     var b = req.query.otp;
-    if (b = settingsA[0]){
-      var buffer = settingsA[2];
-      res.send(buffer);
-    }
-    else{
-      console.log("wrong");
-      res.send(403);
-    };
+    var c = req.query.usrid;
+    var d = settings.getOTP;
+    console.log(settings.getOTP);
+      var buffer = auth.getQR(c);
+      console.log(buffer);
+      res.send(auth.getQR(c));
+  
+    
+});
+
+app.get('/getUsers', function(req,res){
+  console.info("RECEIVED USERS GET REQUEST");
+    res.send(settingsA.users);
 });
 
 app.get('/verifyT', function(req,res){
   console.info("RECEIVED GET REQUEST");
   var b = req.query.tfa;
-  var c = twoFA.verifyToken(b);
+  var d = req.query.usrid;
+  var c = auth.verifyToken(b,d);
   if(c = true){
     console.log("token is correct");
     res.send(200);
