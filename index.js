@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var settingsA = [];
-var twoFA = require('./scripts/auth');
+var auth = require('./scripts/auth');
 var settings = require('./scripts/settings');
 
 settings.load;
@@ -26,14 +26,10 @@ app.get('/', function(req, res){
 app.get('/newQRcode', function(req,res){
     console.info("RECEIVED GET REQUEST");
     var b = req.query.otp;
-    if (b = settingsA[0]){
-      var buffer = settingsA[2];
-      res.send(buffer);
-    }
-    else{
-      console.log("wrong");
-      res.send(403);
-    };
+    var c = req.query.usrid;
+    var d = auth.getQR(c);
+    console.log("index.js: " + d);
+    res.send(d);
 });
 
 app.get('/verifyT', function(req,res){

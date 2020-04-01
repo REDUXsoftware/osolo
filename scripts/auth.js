@@ -72,8 +72,8 @@ module.exports = {
                 json = JSON.stringify(obj, null, 2); //convert it back to json
                 fs.writeFile(sPath, json,); // write it back 
             });
+        };
         });
-    
     
     
 },
@@ -84,9 +84,9 @@ module.exports = {
     getQR: function(a){
         var location = findSecret(a);
         QRCode.toDataURL(obj.users[location].qr, function(err, image_data) {
-            console.log(image_data); // A data URI for the QR code image
+            console.log("auth.js: " + image_data); // A data URI for the QR code image
             return image_data;
           });
     },
 
-};
+    };
