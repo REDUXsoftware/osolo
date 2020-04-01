@@ -38,16 +38,22 @@ app.get('/newQRcode', function(req,res){
 
 app.get('/verifyT', function(req,res){
   console.info("RECEIVED GET REQUEST");
-  var b = req.query.tfa;
-  var c = twoFA.verifyToken(b);
-  if(c = true){
+  console.log(res.query);
+  var b = req.query.token;
+  var c = req.query.usrid
+  var d = auth.verifyT(req.query.usrid,req.query.token);
+  console.log(d);
+  if(d == false){
+    res.send(403);
+    console.log("token is wrong");
+    
+  }else {
     console.log("token is correct");
     res.send(200);
   }
-  else {
-    res.send(403);
-    console.log("token is wrong");
-  }
+   
+    
+  
 });
 
 app.listen(app.get('port'), function(){

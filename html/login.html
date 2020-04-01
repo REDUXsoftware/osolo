@@ -30,6 +30,7 @@
 						<div class="uk-inline uk-width-1-1">
 							<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
 							<input id="tokenInput" class="uk-input uk-border-pill" required placeholder="2FA Code" type="password">
+							<input id="usridIn" class="uk-input uk-border-pill" required placeholder="userID" type="text">
 						</div>
 					</div>
 					<div class="uk-margin-small">
@@ -104,12 +105,14 @@
 				var homeURL = "http://localhost:8080/verifyT?"
 			   
 				
-				var collInput = document.getElementById('tokenInput');
-				var newURL = homeURL+"tfa="+collInput;
+				var collInput = document.getElementById('tokenInput').value;
+				var usridInput = document.getElementById('usridIn').value;
+				var newURL = homeURL+"token="+collInput+"&usrid="+usridInput;
 				var req = new XMLHttpRequest();
 				req.open("GET", newURL, true);
 				req.addEventListener('load', function(){
 					if(req.status>= 200 && req.status<400){
+						console.log(req.status);
 						console.log(req.responseText);
 					}
 					else {

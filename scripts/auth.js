@@ -90,4 +90,15 @@ module.exports = {
         return obj.users[location].qr;
     },
 
+    verifyT: function(a,b){
+        var location = findSecret(a);
+        var vT;
+        vT = speakeasy.totp.verify({
+            secret: obj.users[location].secret,
+            encoding: 'base32',
+            token: b
+          });
+          return vT;
+    },
+
     };
