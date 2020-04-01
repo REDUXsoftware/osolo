@@ -7,6 +7,18 @@ var QRCode = require('qrcode');
 var secret;
 var obj;
 
+    fs.readFile(sPath,(err, data) => {
+        if (err){
+            console.log("INFO: users.json was not found, generating a new one.");
+            return 0;
+        } else {
+        obj = JSON.parse(data); 
+        console.log("INFO: users.json loaded.")
+        };
+    });
+    
+
+
 function readFile(){
     fs.readFile(sPath,(err, data) => {
         if (err){
@@ -25,7 +37,7 @@ function readFile(){
 function findSecret(a) {
     readFile;
     for(var i = 0; i < obj.users.length; i++) {
-        if (x[i]['id']== a){
+        if (obj.users[i]['id']== a){
             return i;
         }
     }
@@ -33,15 +45,7 @@ function findSecret(a) {
   }
 
 module.exports = {
-    setSecret: function(a){
-        if(!a){
-            return 0;
-        }
-        else{
-            secret.base32 = a;
-            return 1;
-        }
-    },
+    
     /**
      * Generates a secret for a user.
      * On first time boot, generates users.json with default account.
@@ -83,10 +87,7 @@ module.exports = {
      */
     getQR: function(a){
         var location = findSecret(a);
-        QRCode.toDataURL(obj.users[location].qr, function(err, image_data) {
-            console.log("auth.js: " + image_data); // A data URI for the QR code image
-            return image_data;
-          });
+        return obj.users[location].qr;
     },
 
     };

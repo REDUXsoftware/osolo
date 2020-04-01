@@ -30,13 +30,14 @@ function loadSettings(){
             console.info("settings.json has been generated.");
             console.info("OTP for 2FA can be found in settings.json");
         }
-       
+      
         //if file is found, read it and load it into array
         fs.readFile(sPath, (err, data) => {
             if (err) throw err;
             settings = JSON.parse(data);
             console.info("settings.json loaded.");
             console.log("OTPIN:" + settings.otpin);
+          //  auth.int();
         });
    
     });

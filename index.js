@@ -4,6 +4,7 @@ var path = require('path');
 var settingsA = [];
 var auth = require('./scripts/auth');
 var settings = require('./scripts/settings');
+var QRCode = require('qrcode');
 
 settings.load;
 settingsA = settings.getSettings;
@@ -29,7 +30,10 @@ app.get('/newQRcode', function(req,res){
     var c = req.query.usrid;
     var d = auth.getQR(c);
     console.log("index.js: " + d);
-    res.send(d);
+    QRCode.toDataURL(d, function(err, image_data) {
+      console.log("index.js: " + image_data); // A data URI for the QR code image
+      res.send(image_data);
+    });
 });
 
 app.get('/verifyT', function(req,res){
