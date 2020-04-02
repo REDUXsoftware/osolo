@@ -8,6 +8,9 @@
 		<!-- CSS FILES -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/uikit@latest/dist/css/uikit.min.css">
 		<link rel="stylesheet" type="text/css" href="css/login-dark.css">
+		<script  src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js">
+		</script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	</head>
 	<body class="login uk-cover-container uk-background-secondary uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-overflow-hidden uk-light" data-uk-height-viewport>
 		<!-- overlay -->
@@ -34,7 +37,7 @@
 						</div>
 					</div>
 					<div class="uk-margin-small">
-						<label><input class="uk-checkbox" type="checkbox"> Keep me logged in for 7 days.</label>
+						<label><input id="saveChk" class="uk-checkbox" type="checkbox"> Keep me logged in for 7 days.</label>
 					</div>
 					<div class="uk-margin-bottom">
 						<button id="2faLogin" type="submit" class="uk-button uk-button-primary uk-border-pill uk-width-1-1">LOG IN</button>
@@ -74,19 +77,20 @@
 		<script src="https://cdn.jsdelivr.net/npm/uikit@latest/dist/js/uikit-icons.min.js"></script>
 
 		<script>
-            
-			document.getElementById('qrBtn').addEventListener('click', function(event) {
+            document.getElementById('qrBtn').addEventListener('click', function(event) {
 				console.log("pressed");
 				var homeURL = "http://localhost:8080/newQRcode?"
 			   
 				var qrFrame = document.getElementById('qrIframe');
 				var collInput = document.getElementById('otpIn').value;
+				
 				var usridInput = document.getElementById('usridIn').value;
 				var newURL = homeURL+"otp="+collInput+"&usrid="+usridInput;
 				var req = new XMLHttpRequest();
 				req.open("GET", newURL, true);
 				req.addEventListener('load', function(){
 					if(req.status>= 200 && req.status<400){
+						
 						console.log(req.responseText);
 						qrFrame.src = req.responseText;
 					}
@@ -94,24 +98,28 @@
 						console.log("Error in network request: " + request.statusText);
 					 }
 				});
-			 req.send(null);
-				
-		  
-		   
+			 req.send(null);   
 			 });
 
 			 document.getElementById('2faLogin').addEventListener('click', function(event) {
 				console.log("pressed");
 				var homeURL = "http://localhost:8080/verifyT?"
-			   
-				
-				var collInput = document.getElementById('tokenInput').value;
+			   	var collInput = document.getElementById('tokenInput').value;
 				var usridInput = document.getElementById('usridIn').value;
+				var saveInput = document.getElementById('saveChk').checked;
 				var newURL = homeURL+"token="+collInput+"&usrid="+usridInput;
 				var req = new XMLHttpRequest();
 				req.open("GET", newURL, true);
 				req.addEventListener('load', function(){
 					if(req.status>= 200 && req.status<400){
+						if(saveInput = true){
+							Cookies.set('usrid', usridInput, {expires: 7});
+							window.location.replace('/dashboard');
+						}
+						else {
+							Cookies.set('usrid', usridInput, {expires: .5});
+							window.location.replace('/dashboard');
+						}
 						console.log(req.status);
 						console.log(req.responseText);
 					}
@@ -120,11 +128,30 @@
 					 }
 				});
 			 req.send(null);
-				
-		  
-		   
+	   
 			 });
 			
-	</script>
+		</script>
+		<script>
+			 
+			 document.onreadystatechange = function() {
+				var b = Cookies.get('usrid');
+				console.log(b);
+				console.log(Cookies.get());
+				
+				if(b == undefined){
+					
+					console.log("Error, couldn't find cookies.");
+					window.location.replace('/');
+					
+				}
+				else {
+					
+					window.location.replace('/dashboard');
+				}
+
+			};
+			
+		</script>
 	</body>
 </html>

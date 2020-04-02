@@ -14,18 +14,18 @@ settingsA = settings.getSettings;
 
   
 app.set('port', 8080);
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', function(req, res){
-  twoFA.genToken;
-  res.sendFile(path.join(__dirname + '/html/login.html'));
+  
+  res.sendFile(path.join(__dirname + '/public/login.html'));
+})
+app.get('/dashboard', function(req, res){
+  
+  res.sendFile(path.join(__dirname + '/public/dashboard.html'));
 })
 
 app.get('/newQRcode', function(req,res){
-    console.info("RECEIVED GET REQUEST");
+    console.info("INFO:");
     var b = req.query.otp;
     var c = req.query.usrid;
     var d = auth.getQR(c);
@@ -37,8 +37,8 @@ app.get('/newQRcode', function(req,res){
 });
 
 app.get('/verifyT', function(req,res){
-  console.info("RECEIVED GET REQUEST");
-  console.log(res.query);
+  console.info("INFO: recived call to verify token");
+  
   var b = req.query.token;
   var c = req.query.usrid
   var d = auth.verifyT(req.query.usrid,req.query.token);
