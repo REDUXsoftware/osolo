@@ -8,8 +8,7 @@
 		<!-- CSS FILES -->
 		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/uikit@latest/dist/css/uikit.min.css">
 		<link rel="stylesheet" type="text/css" href="css/login-dark.css">
-		<script  src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js">
-		</script>
+		<script  src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	</head>
 	<body class="login uk-cover-container uk-background-secondary uk-flex uk-flex-center uk-flex-middle uk-height-viewport uk-overflow-hidden uk-light" data-uk-height-viewport>
@@ -29,11 +28,11 @@
 			<form class="toggle-class" action="#">
 				<fieldset class="uk-fieldset">
 					
-					<div class="uk-margin-small">
-						<div class="uk-inline uk-width-1-1">
+					<div class="uk-margin">
+						<div class="uk-inline uk-width-1-1 ">
 							<span class="uk-form-icon uk-form-icon-flip" data-uk-icon="icon: lock"></span>
-							<input id="tokenInput" class="uk-input uk-border-pill" required placeholder="2FA Code" type="password">
-							<input id="usridIn" class="uk-input uk-border-pill" required placeholder="userID" type="text">
+							<input id="tokenInput" class="uk-input uk-form-small uk-border-pill" required placeholder="2FA Code" type="password">
+							<input id="usridIn" class="uk-input uk-form-small uk-border-pill" required placeholder="userID" type="text">
 						</div>
 					</div>
 					<div class="uk-margin-small">
@@ -142,7 +141,7 @@
 				if(b == undefined){
 					
 					console.log("Error, couldn't find cookies.");
-					window.location.replace('/');
+					return;
 					
 				}
 				else {
