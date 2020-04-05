@@ -34,7 +34,7 @@ function readFile(){
  * Find's the location of a key for a requested user ID
  * @param {string} a User ID
  */
-function findSecret(a) {
+function findLocation(a) {
     readFile;
     for(var i = 0; i < obj.users.length; i++) {
         if (obj.users[i]['id']== a){
@@ -86,19 +86,19 @@ module.exports = {
      * @param {*} a User ID
      */
     getQR: function(a){
-        var location = findSecret(a);
+        var location = findLocation(a);
         return obj.users[location].qr;
     },
 
     verifyT: function(a,b){
-        var location = findSecret(a);
+        var location = findLocation(a);
         var vT;
         vT = speakeasy.totp.verify({
             secret: obj.users[location].secret,
             encoding: 'base32',
             token: b
-          });
-          return vT;
+        });
+        return vT;
     },
 
     };

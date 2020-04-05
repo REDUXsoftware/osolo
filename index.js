@@ -6,6 +6,8 @@ var auth = require('./scripts/auth');
 var settings = require('./scripts/settings');
 var QRCode = require('qrcode');
 
+const si = require('systeminformation');
+
 settings.load;
 settingsA = settings.getSettings;
 
@@ -51,10 +53,21 @@ app.get('/verifyT', function(req,res){
     console.log("token is correct");
     res.send(200);
   }
-   
-    
-  
 });
+
+app.get('/getsysinfo', function(req,res){
+  let sysinfo = {
+    info:[]
+  };
+  si.currentLoad(function(data){
+    sysinfo.info.push({"cpuUse": data.currentload});
+  })
+  si.mem(function(data){
+    sysinfo.info.push({"memUse": data.used,"memMax": data.total});  
+  })
+    setTimeout(function(){res.send(sysinfo)}, 200)
+  });
+
 
 app.listen(app.get('port'), function(){
     console.log('Osolo starting on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');

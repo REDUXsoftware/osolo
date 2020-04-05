@@ -47,41 +47,30 @@
 			
 			<div class="left-nav-wrap">
 				<ul class="uk-nav uk-nav-default uk-nav-parent-icon" data-uk-nav>
-					<li class="uk-nav-header">ACTIONS</li>
-					<li><a href="#"><span data-uk-icon="icon: comments" class="uk-margin-small-right"></span>Messages</a></li>
-					<li><a href="#"><span data-uk-icon="icon: users" class="uk-margin-small-right"></span>Friends</a></li>
+					
+					<li><a href="#"><span data-uk-icon="icon: home" class="uk-margin-small-right"></span>dashboard</a></li>
+					<li><a href="#"><span data-uk-icon="icon: cog" class="uk-margin-small-right"></span>settings</a></li>
 					
 				</ul>
 				<div class="left-content-box uk-margin-top">
 					
-						<h5>Daily Reports</h5>
+						<h5>system stats</h5>
 						<div>
-							<span class="uk-text-small">Traffic <small>(+50)</small></span>
-							<progress class="uk-progress" value="50" max="100"></progress>
+							<span class="uk-text-small">cpu: <small><span id="cpuStat">$00</span> %</small></span>
+							<progress id="cpuBar" class="uk-progress" value="50" max="100"></progress>
 						</div>
 						<div>
-							<span class="uk-text-small">Income <small>(+78)</small></span>
-							<progress class="uk-progress success" value="78" max="100"></progress>
+							<span class="uk-text-small">ram: <small><span id="memUStat">$00</span> used / <span id="memMStat">$00</span> total</small<span>
+							<progress id="memBar" class="uk-progress success" value="50" max="100"></progress>
 						</div>
-						<div>
-							<span class="uk-text-small">Feedback <small>(-12)</small></span>
-							<progress class="uk-progress warning" value="12" max="100"></progress>
-						</div>
+						
 					
 				</div>
 				
 			</div>
 			<div class="bar-bottom">
 				<ul class="uk-subnav uk-flex uk-flex-center uk-child-width-1-5" data-uk-grid>
-					<li>
-						<a href="#" class="uk-icon-link" data-uk-icon="icon: home" title="Home" data-uk-tooltip></a>
-					</li>
-					<li>
-						<a href="#" class="uk-icon-link" data-uk-icon="icon: settings" title="Settings" data-uk-tooltip></a>
-					</li>
-					<li>
-						<a href="#" class="uk-icon-link" data-uk-icon="icon: social"  title="Social" data-uk-tooltip></a>
-					</li>
+					
 					
 					<li>
 						<a href="#" onclick="logOut()" class="uk-icon-link" data-uk-tooltip="Sign out" data-uk-icon="icon: sign-out"></a>
@@ -293,10 +282,61 @@
 			
 			window.location.replace('/');
 			};
-			
-	
+	</script>
+	<script>
+		var timerIntr = 10000;
+		var specTimer = setInterval(getSpecs, 2000);
+		var isOnline = true;
+		var a = 0;
+
+		
+		function getSpecs(){
+				var cpuMeter = document.getElementById('cpuStat');
+				var cpuBar = document.getElementById('cpuBar');
+				var memUMeter = document.getElementById('memUStat');
+				var memMMeter = document.getElementById('memMStat');
+				var memBar = document.getElementById('memBar');
+
+				var newURL = "http://localhost:8080/getsysinfo";
+				var req = new XMLHttpRequest();
+				req.open("GET", newURL, true);
+				req.addEventListener('load', function(){
+					if(req.status>= 200 && req.status<400){
+						let data = JSON.parse(req.responseText);
+						let cpuB = data.info[0].cpuUse;
+						let memUB = (data.info[1].memUse / 1073741824);
+						let memMB = (data.info[1].memMax / 1073741824);
+						
+						cpuMeter.innerHTML = cpuB.toFixed(1);
+						cpuBar.value = cpuB;
+
+						memUMeter.innerHTML = memUB.toFixed(1);
+						memMMeter.innerHTML = memMB.toFixed(1);
+						memMMeter.max = memMB.toFixed(1);
+						memMMeter.value = memUB.toFixed(1);
+						
+					}
+					else {
+						console.log("Error in network request: " + request.statusText);
+						isOnline = false;
+						
+					 }
+					 
+				});
+				req.send(null)
+				req.addEventListener('error', function(){
+					if(a == 0){
+					UIkit.notification({message: 'Seems we lost connection to Osolo. Check the console.', status: 'danger', pos: 'bottom-right', timeout: 300000});
+					a++;
+				}
+				})
+				
 		
 		
+		
+
+		};
+
 	</script>
 	</body>
 </html>
