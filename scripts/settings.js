@@ -11,10 +11,12 @@ var settings = [];
 var otbuffer = cryptoRandomString({length: 6, type: 'base64'});
 
 
+//to-do: add encrpytion to this with a user's own pin or something among those lines.
 function loadSettings(){
     fs.access(sPath, fs.F_OK, (err) => {
         //if settings.json is not found, generate a new one and load it into array
         if (err) {
+            //should move this to it's own function, clean it up a bit
             var bufID = cryptoRandomString({length: 6, type: 'base64'});
             console.info("INFO: settings.json not found, generating a new one.")
             let settings = { 
@@ -48,7 +50,7 @@ function getSettings(){
 };
 module.exports = {
     /**
-    * Initializes settings.json
+    * load's settings.json and user.json into prog. memory
     */
     load: loadSettings(),
     /**

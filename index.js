@@ -1,5 +1,6 @@
 var express = require('express');
-var app = express();
+//bend, short for backend. im lazy ok?
+var bend = express();
 var path = require('path');
 var settingsA = [];
 var auth = require('./scripts/auth');
@@ -8,6 +9,7 @@ var QRCode = require('qrcode');
 
 const si = require('systeminformation');
 
+//maybe make this look nicer.
 settings.load;
 settingsA = settings.getSettings;
 
@@ -15,18 +17,19 @@ settingsA = settings.getSettings;
 
 
   
-app.set('port', 8080);
-app.use(express.static(path.join(__dirname, 'public')));
-app.get('/', function(req, res){
+bend.set('port', 8080);
+bend.use(express.static(path.join(__dirname, 'public')));
+bend.get('/', function(req, res){
   
   res.sendFile(path.join(__dirname + '/public/login.html'));
 })
-app.get('/dashboard', function(req, res){
+bend.get('/dashboard', function(req, res){
   
   res.sendFile(path.join(__dirname + '/public/dashboard.html'));
 })
 
-app.get('/newQRcode', function(req,res){
+//move this to another file, prob auth.js
+bend.get('/newQRcode', function(req,res){
     console.info("INFO:");
     var b = req.query.otp;
     var c = req.query.usrid;
@@ -38,7 +41,8 @@ app.get('/newQRcode', function(req,res){
     });
 });
 
-app.get('/verifyT', function(req,res){
+//move this to another file, prob auth.js
+bend.get('/verifyT', function(req,res){
   console.info("INFO: recived call to verify token");
   
   var b = req.query.token;
@@ -55,7 +59,8 @@ app.get('/verifyT', function(req,res){
   }
 });
 
-app.get('/getsysinfo', function(req,res){
+//gotta move this to a nicer place and prob optimize the func using callbacks or something like that
+bend.get('/getsysinfo', function(req,res){
   let sysinfo = {
     info:[]
   };
@@ -65,12 +70,13 @@ app.get('/getsysinfo', function(req,res){
   si.mem(function(data){
     sysinfo.info.push({"memUse": data.used,"memMax": data.total});  
   })
+  //a hack so the program stops just enough time so the info can be added to the arr. gotta change the whole func to promises or callbacks.
     setTimeout(function(){res.send(sysinfo)}, 200)
   });
 
 
-app.listen(app.get('port'), function(){
-    console.log('Osolo starting on http://localhost:' + app.get('port') + '; press Ctrl-C to terminate.');
+bend.listen(bend.get('port'), function(){
+    console.log('Osolo starting on http://localhost:' + bend.get('port') + '; press Ctrl-C to terminate.');
   });
 
   

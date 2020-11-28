@@ -1,3 +1,5 @@
+//osolo's auth manager
+
 const fs = require('fs');
 const sPath = 'users.json';
 var speakeasy = require('speakeasy');
@@ -35,6 +37,7 @@ function readFile(){
  * @param {string} a User ID
  */
 function findLocation(a) {
+    //to-do: maybe make a algorithm for this, but i doubt 100's of people are going to be using the same osolo server at any time, so meh?
     readFile;
     for(var i = 0; i < obj.users.length; i++) {
         if (obj.users[i]['id']== a){
