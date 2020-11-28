@@ -284,6 +284,7 @@
 			};
 	</script>
 	<script>
+		//to-do: move this <script> to a sperate js file
 		var timerIntr = 10000;
 		var specTimer = setInterval(getSpecs, 2000);
 		var isOnline = true;
@@ -297,11 +298,13 @@
 				var memMMeter = document.getElementById('memMStat');
 				var memBar = document.getElementById('memBar');
 
+				//to-do: make the URL var more flexable. outside connections would prob fail.
 				var newURL = "http://localhost:8080/getsysinfo";
 				var req = new XMLHttpRequest();
 				req.open("GET", newURL, true);
 				req.addEventListener('load', function(){
 					if(req.status>= 200 && req.status<400){
+						//maybe clean this up
 						let data = JSON.parse(req.responseText);
 						let cpuB = data.info[0].cpuUse;
 						let memUB = (data.info[1].memUse / 1073741824);
@@ -324,6 +327,7 @@
 					 
 				});
 				req.send(null)
+				//this is kinda janky, gotta remake this
 				req.addEventListener('error', function(){
 					if(a == 0){
 					UIkit.notification({message: 'Seems we lost connection to Osolo. Check the console.', status: 'danger', pos: 'bottom-right', timeout: 300000});
